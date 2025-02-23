@@ -1,0 +1,31 @@
+node_modules/
+.env
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 🚀 Backend-Specific Ignored Files
+backend/node_modules/
+backend/.env
+backend/dist/
+backend/build/
+backend/out/
+backend/database.sqlite
+backend/database.sqlite3
+backend/*.db
+backend/*.sqlite
+
+# 🚀 Frontend-Specific Ignored Files
+frontend/node_modules/
+frontend/.env
+frontend/dist/
+frontend/build/
+frontend/out/
+
+# 🚀 Dependency Lock Files (Optional: Keep only one)
+package-lock.json
