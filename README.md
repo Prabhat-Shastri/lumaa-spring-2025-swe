@@ -1,119 +1,69 @@
-# Full-Stack Coding Challenge
+Step 1 - Create the database using terminal 
 
-**Deadline**: Sunday, Feb 23th 11:59 pm PST
+createdb -U <postgresusername> task_db
 
----
+Step 2 - Connect to the database
 
-## Overview
+psql -U <postgresusername> -d task_db
 
-Create a “Task Management” application with **React + TypeScript** (frontend), **Node.js** (or **Nest.js**) (backend), and **PostgreSQL** (database). The application should:
+Step 3 - It will take you inside the database (task_db=#) so create the tables by entering :
 
-1. **Register** (sign up) and **Log in** (sign in) users.
-2. After logging in, allow users to:
-   - **View a list of tasks**.
-   - **Create a new task**.
-   - **Update an existing task** (e.g., mark complete, edit).
-   - **Delete a task**.
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password TEXT NOT NULL
+);
 
-Focus on **correctness**, **functionality**, and **code clarity** rather than visual design.  
-This challenge is intended to be completed within ~3 hours, so keep solutions minimal yet functional.
+CREATE TABLE tasks (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    isComplete BOOLEAN DEFAULT FALSE,
+    userId INTEGER REFERENCES users(id) ON DELETE CASCADE
+);
 
----
+Step 4 - Verify the tables you created 
 
-## Requirements
+\dt
 
-### 1. Authentication
+You should get :
+            List of relations
+ Schema |  Name  | Type  |     Owner      
+--------+--------+-------+----------------
+ public | tasks  | table | <postgresusername>
+ public | users  | table | <postgresusername>
+(2 rows)
 
-- **User Model**:
-  - `id`: Primary key
-  - `username`: Unique string
-  - `password`: Hashed string
-- **Endpoints**:
-  - `POST /auth/register` – Create a new user
-  - `POST /auth/login` – Login user, return a token (e.g., JWT)
-- **Secure the Tasks Routes**: Only authenticated users can perform task operations.  
-  - **Password Hashing**: Use `bcrypt` or another hashing library to store passwords securely.
-  - **Token Verification**: Verify the token (JWT) on each request to protected routes.
 
-### 2. Backend (Node.js or Nest.js)
+Step 5 - Exit psql 
 
-- **Tasks CRUD**:  
-  - `GET /tasks` – Retrieve a list of tasks (optionally filtered by user).  
-  - `POST /tasks` – Create a new task.  
-  - `PUT /tasks/:id` – Update a task (e.g., mark as complete, edit text).  
-  - `DELETE /tasks/:id` – Delete a task.
-- **Task Model**:
-  - `id`: Primary key
-  - `title`: string
-  - `description`: string (optional)
-  - `isComplete`: boolean (default `false`)
-  - _(Optional)_ `userId` to link tasks to the user who created them
-- **Database**: PostgreSQL
-  - Provide instructions/migrations to set up:
-    - `users` table (with hashed passwords)
-    - `tasks` table
-- **Setup**:
-  - `npm install` to install dependencies
-  - `npm run start` (or `npm run dev`) to run the server
-  - Document any environment variables (e.g., database connection string, JWT secret)
+\q
 
-### 3. Frontend (React + TypeScript)
+You can connect DBeaver to the database by starting a new connection and connecting it to task_db. It will allow for easy management and checking of the database entries.
 
-- **Login / Register**:
-  - Simple forms for **Register** and **Login**.
-  - Store JWT (e.g., in `localStorage`) upon successful login.
-  - If not authenticated, the user should not see the tasks page.
-- **Tasks Page**:
-  - Fetch tasks from `GET /tasks` (including auth token in headers).
-  - Display the list of tasks.
-  - Form to create a new task (`POST /tasks`).
-  - Buttons/fields to update a task (`PUT /tasks/:id`).
-  - Button to delete a task (`DELETE /tasks/:id`).
-- **Navigation**:
-  - Show `Login`/`Register` if not authenticated.
-  - Show `Logout` if authenticated.
-- **Setup**:
-  - `npm install` then `npm start` (or `npm run dev`) to run.
-  - Document how to point the frontend at the backend (e.g., `.env` file, base URL).
+Now clone the repository and cd to the repository
 
----
+Now coming to the setup of the .env files 
+.env file for backend - It should be in the backend directory 
 
-## Deliverables
+PORT=<port-of-your-choice> (I used 5001)
+DATABASE_URL=postgres://<postgresusername>:<youruserpassword>@localhost:<dbport>/task_db
+JWT_SECRET=<your-jwt-secret-key>
 
-1. **Fork the Public Repository**: **Fork** this repo into your own GitHub account.
-2. **Implement Your Solution** in the forked repository. Make sure you're README file has:
-   - Steps to set up the database (migrations, environment variables).
-   - How to run the backend.
-   - How to run the frontend.
-   - Any relevant notes on testing.
-   - Salary Expectations per month (Mandatory)
-3. **Short Video Demo**: Provide a link (in a `.md` file in your forked repo) to a brief screen recording showing:
-   - Registering a user
-   - Logging in
-   - Creating, updating, and deleting tasks
-4. **Deadline**: Submissions are due **Sunday, Feb 23th 11:59 pm PST**.
+.env file for the frontend - It should be in the frontend directory
 
-> **Note**: Please keep your solution minimal. The entire project is intended to be completed in around 3 hours. Focus on core features (registration, login, tasks CRUD) rather than polished UI or extra features.
+REACT_APP_API_URL=http://localhost:<backend-port> (I used 5001 for the backend so entered that here>
 
----
+Once the .env files are setup, considering you are in the main repo directory, follow these steps:
 
-## Evaluation Criteria
+1. cd backend
+2. npm install
+3. To start the backend, enter node src/server.js
 
-1. **Functionality**  
-   - Does registration and login work correctly (with password hashing)?
-   - Are tasks protected by authentication?
-   - Does the tasks CRUD flow work end-to-end?
+4. cd ..
+5. cd frontend
+6. npm install
+7. npm start
 
-2. **Code Quality**  
-   - Is the code structured logically and typed in TypeScript?
-   - Are variable/function names descriptive?
+Now, the frontend and backend both are running and the database is also connected (Make sure you follow the database connection steps and ensure the postgresql service is active through your terminal).
 
-3. **Clarity**  
-   - Is the `README.md` (in your fork) clear and detailed about setup steps?
-   - Easy to run and test?
-
-4. **Maintainability**  
-   - Organized logic (controllers/services, etc.)
-   - Minimal hard-coded values
-
-Good luck, and we look forward to your submission!
