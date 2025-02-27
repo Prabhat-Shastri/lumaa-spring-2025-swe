@@ -67,3 +67,9 @@ Once the .env files are setup, considering you are in the main repo directory, f
 
 Now, the frontend and backend both are running and the database is also connected (Make sure you follow the database connection steps and ensure the postgresql service is active through your terminal).
 
+Pay Expectations (Required to be stated)
+As far as the pay is concerned, I am comfortable with the pay stated on the job posting, which is 20-30 per hour. I am doing this to gain further experience and exposure to software engineering and full stack development 
+
+Video (Sorry for delay - I realised late that I had not uploaded the video link)
+https://drive.google.com/file/d/10f-BETNStuWpGHRZQ_oqNLnp-gI6s_U1/view?usp=sharing
+the working flow can be seen here
